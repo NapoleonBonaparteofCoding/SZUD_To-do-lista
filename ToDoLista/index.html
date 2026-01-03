@@ -12,6 +12,11 @@
       <h1 id=app-title>To Do lista</h1>
       <div class="controls">
         <input id="new-task" type="text" placeholder="Dodaj novu stavku..." aria-label="Dodaj novu stavku">
+        <select id="priority-select" aria-label="Prioritet zadatka">
+          <option value="soon">Uskoro</option>
+          <option value="normal" selected>Ima vremena</option>
+          <option value="optional">ne mora ni da se uradi ali bilo bi dobro</option>
+        </select>
         <button id="add-btn" aria-label="Dodaj stavku">Dodaj</button>
         <select id="sort-order" aria-label="Sortiranje zadataka">
           <option value="newest" selected>Najnovije prvo</option>
