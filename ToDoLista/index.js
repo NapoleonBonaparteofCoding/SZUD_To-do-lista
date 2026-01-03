@@ -4,6 +4,7 @@
   const listEl = document.getElementById('task-list');
   const newTaskInput = document.getElementById('new-task');
   const addBtn = document.getElementById('add-btn');
+  const prioritySelect = document.getElementById('priority-select');
   const sortSelect = document.getElementById('sort-order');
   const itemsLeft = document.getElementById('items-left');
   const filterBtns = document.querySelectorAll('.filter');
@@ -15,8 +16,8 @@
 
   function load(){
     try { tasks = JSON.parse(localStorage.getItem(STORAGE) || '[]'); } catch { tasks = []; }
-    // ensure createdAt exists for older entries
-    tasks = tasks.map(t => ({ ...t, createdAt: t.createdAt || Number(t.id) }));
+    // ensure createdAt and priority exist for older entries
+    tasks = tasks.map(t => ({ ...t, createdAt: t.createdAt || Number(t.id), priority: t.priority || 'normal' }));
   }
   function save(){ localStorage.setItem(STORAGE, JSON.stringify(tasks)); }
 
@@ -41,9 +42,19 @@
     del.textContent = '×';
     del.setAttribute('aria-label', 'Obriši stavku');
 
+    const pr = document.createElement('select');
+    pr.className = 'task-priority pr-' + (task.priority || 'normal');
+    pr.setAttribute('aria-label', 'Prioritet zadatka');
+    pr.innerHTML = '<option value="soon">Uskoro</option><option value="normal">Ima vremena</option><option value="optional">ne mora ni da se uradi ali bilo bi dobro</option>';
+    pr.value = task.priority || 'normal';
+    pr.addEventListener('change', () => updatePriority(task.id, pr.value));
+
     li.appendChild(checkbox);
     li.appendChild(label);
+    li.appendChild(pr);
     li.appendChild(del);
+
+    li.classList.add('pr-' + (task.priority || 'normal'));
 
     return li;
   }
@@ -58,7 +69,8 @@
 
   function addTask(text){
     if(!text || !text.trim()) return;
-    tasks.push({ id: Date.now().toString(), text: text.trim(), completed: false, createdAt: Date.now() });
+    const priority = (typeof prioritySelect !== 'undefined' && prioritySelect) ? prioritySelect.value : 'normal';
+    tasks.push({ id: Date.now().toString(), text: text.trim(), completed: false, createdAt: Date.now(), priority });
     save(); render();
   }
 
@@ -71,6 +83,8 @@
   function editTask(id, newText){
     const t = tasks.find(x => x.id === id); if(!t) return; t.text = newText.trim(); if(!t.text) deleteTask(id); else { save(); render(); }
   }
+
+  function updatePriority(id, newPriority){ const t = tasks.find(x => x.id === id); if(!t) return; t.priority = newPriority; save(); render(); }
 
   function clearCompleted(){ tasks = tasks.filter(x => !x.completed); save(); render(); }
 
