@@ -1,4 +1,4 @@
-﻿:root{
+:root{
   --bg:#f6f7fb;
   --card:#ffffff;
   --accent:#6c63ff;
@@ -8,19 +8,30 @@
 *{box-sizing:border-box}
 html,body{height:100%}
 body{font-family:Segoe UI, Roboto, Arial, sans-serif; background:var(--bg); margin:0; display:flex; align-items:center; justify-content:center; padding:24px}
-.app{width:100%; max-width:700px; background:var(--card); border-radius:10px; box-shadow:0 6px 22px rgba(15,23,42,0.08); padding:20px}
+.app{width:100%; max-width:760px; background:linear-gradient(180deg, var(--card), #fbfbfe); border-radius:12px; box-shadow:0 10px 30px rgba(15,23,42,0.08); padding:22px; transition:transform .18s ease, box-shadow .18s ease}
+.app:hover{transform:translateY(-3px); box-shadow:0 20px 40px rgba(15,23,42,0.12)}
 .header{display:flex; flex-direction:column; gap:12px}
 h1{margin:0; font-size:1.4rem; color:#111827}
-.controls{display:flex; gap:8px}
-#new-task{flex:1; padding:10px 12px; border:1px solid #e6e7ee; border-radius:8px; font-size:1rem}
-#add-btn{padding:10px 14px; background:var(--accent); color:#fff; border:none; border-radius:8px; cursor:pointer}
+.controls{display:flex; gap:8px; align-items:center}
+#new-task{flex:1; padding:10px 12px; border:1px solid #e6e7ee; border-radius:8px; font-size:1rem; transition:box-shadow .12s ease, border-color .12s ease}
+#new-task:focus{outline:none; box-shadow:0 6px 18px rgba(108,99,255,0.12); border-color:var(--accent)}
+#add-btn{padding:10px 14px; background:var(--accent); color:#fff; border:none; border-radius:8px; cursor:pointer; transition:transform .12s ease, box-shadow .12s ease}
+#add-btn:hover{transform:translateY(-2px); box-shadow:0 6px 18px rgba(108,99,255,0.18)}
+#add-btn:focus{outline:none; box-shadow:0 8px 22px rgba(108,99,255,0.16)}
 #add-btn:active{transform:translateY(1px)}
+#sort-order{padding:8px 10px; border:1px solid #e6e7ee; border-radius:8px; background:transparent; color:#111827; cursor:pointer}
+@keyframes popIn{from{opacity:0; transform:translateY(-6px) scale(.995)} to{opacity:1; transform:none}}
+#sort-order{padding:8px 10px; border:1px solid #e6e7ee; border-radius:8px; background:transparent; color:#111827; cursor:pointer}
 .task-list{list-style:none; margin:16px 0; padding:0; display:flex; flex-direction:column; gap:8px; max-height:50vh; overflow:auto}
-.task-item{display:flex; align-items:center; gap:12px; padding:10px; border-radius:8px; border:1px solid #f1f5f9}
-.task-item.completed{opacity:0.6; text-decoration:line-through}
-.task-item label{flex:1; cursor:text}
-.toggle{width:18px; height:18px}
-.delete{background:transparent; border:none; color:var(--danger); font-size:1.1rem; cursor:pointer; padding:6px; border-radius:6px}
+.task-item{display:flex; align-items:center; gap:12px; padding:12px; border-radius:10px; border:1px solid #eef2ff; background:linear-gradient(90deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4)); box-shadow:0 2px 6px rgba(15,23,42,0.03); transition:transform .12s ease, box-shadow .12s ease, opacity .12s; animation:popIn .18s ease}
+.task-item:hover{transform:translateY(-4px); box-shadow:0 10px 20px rgba(16,24,40,0.06)}
+.task-item.completed{opacity:0.6}
+.task-item label{flex:1; cursor:text; transition:color .12s, opacity .12s}
+input.toggle{width:20px; height:20px; accent-color:var(--accent); transition:transform .12s ease}
+input.toggle:checked{transform:scale(1.06)}
+input.toggle:checked + label{color:var(--muted); text-decoration:line-through; opacity:0.7} 
+.delete{background:transparent; border:none; color:var(--danger); font-size:1.1rem; cursor:pointer; padding:6px; border-radius:6px; opacity:0.45; transition:opacity .12s ease, transform .12s ease; transform:translateX(4px)}
+.task-item:hover .delete{opacity:1; transform:translateX(0)}
 .footer{display:flex; align-items:center; gap:12px; justify-content:space-between; flex-wrap:wrap; margin-top:8px}
 .info{color:var(--muted)}
 .filters{display:flex; gap:8px}
@@ -28,4 +39,5 @@ h1{margin:0; font-size:1.4rem; color:#111827}
 .filter.active{border-color:#eaeaff; background:#f8f8ff}
 .clear{background:transparent; border:none; color:var(--danger); cursor:pointer}
 .edit-input{flex:1; padding:8px; border-radius:6px; border:1px solid #e6e7ee}
+@media (max-width:720px){ .app{padding:16px} .controls{flex-direction:column; gap:10px; align-items:stretch} #add-btn,#sort-order{width:100%} .controls > *{width:100%} .filters{width:100%; justify-content:space-between} }
 @media (max-width:420px){ .app{padding:14px} #add-btn{padding:8px 10px} }
