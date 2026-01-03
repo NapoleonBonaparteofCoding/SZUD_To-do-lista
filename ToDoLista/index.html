@@ -1,0 +1,38 @@
+﻿<!doctype html>
+<html lang= sr>
+<head>
+  <meta charset=utf-8>
+  <meta name=viewport content=width=device-width,initial-scale=1>
+  <title>To Do lista</title>
+  <link rel=stylesheet href=style.css>
+</head>
+<body>
+  <div class=app role=application aria-labelledby=app-title>
+    <header class=header>
+      <h1 id=app-title>To Do lista</h1>
+      <div class=controls>
+        <input id=new-task type=text placeholder=Dodaj novu stavku... aria-label=Dodaj novu stavku>
+        <button id=add-btn aria-label=Dodaj stavku>Dodaj</button>
+      </div>
+    </header>
+
+    <main>
+      <ul id=task-list class=task-list aria-live=polite></ul>
+
+      <footer class="footer">
+        <div class="info">
+          <span id="items-left">0 stavki</span>
+        </div>
+        <div class="filters" role="tablist" aria-label="Filtriraj zadatke">
+          <button type="button" class="filter active" data-filter="all">Sve</button>
+          <button type="button" class="filter" data-filter="active">Aktivne</button>
+          <button type="button" class="filter" data-filter="completed">Završene</button>
+        </div>
+        <button id="clear-completed" class="clear">Obriši završene</button>
+      </footer>
+    </main>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>
