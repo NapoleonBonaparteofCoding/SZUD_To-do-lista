@@ -1,17 +1,22 @@
-﻿(() => {
+(() => {
   const STORAGE = 'todo-list-v1';
+  const SORT_KEY = 'todo-sort-order';
   const listEl = document.getElementById('task-list');
   const newTaskInput = document.getElementById('new-task');
   const addBtn = document.getElementById('add-btn');
+  const sortSelect = document.getElementById('sort-order');
   const itemsLeft = document.getElementById('items-left');
   const filterBtns = document.querySelectorAll('.filter');
   const clearBtn = document.getElementById('clear-completed');
+  let sortOrder = localStorage.getItem(SORT_KEY) || 'newest';
 
   let tasks = [];
   let filter = 'all';
 
   function load(){
     try { tasks = JSON.parse(localStorage.getItem(STORAGE) || '[]'); } catch { tasks = []; }
+    // ensure createdAt exists for older entries
+    tasks = tasks.map(t => ({ ...t, createdAt: t.createdAt || Number(t.id) }));
   }
   function save(){ localStorage.setItem(STORAGE, JSON.stringify(tasks)); }
 
@@ -46,13 +51,14 @@
   function render(){
     listEl.innerHTML = '';
     const filtered = tasks.filter(t => filter === 'all' ? true : (filter === 'active' ? !t.completed : t.completed));
-    filtered.forEach(t => listEl.appendChild(createTaskElement(t)));
+    const sorted = [...filtered].sort((a,b) => (sortOrder === 'newest' ? b.createdAt - a.createdAt : a.createdAt - b.createdAt));
+    sorted.forEach(t => listEl.appendChild(createTaskElement(t)));
     itemsLeft.textContent = `${tasks.filter(t => !t.completed).length} stavki`;
   }
 
   function addTask(text){
     if(!text || !text.trim()) return;
-    tasks.push({ id: Date.now().toString(), text: text.trim(), completed: false });
+    tasks.push({ id: Date.now().toString(), text: text.trim(), completed: false, createdAt: Date.now() });
     save(); render();
   }
 
@@ -72,6 +78,8 @@
 
   addBtn.addEventListener('click', () => { addTask(newTaskInput.value); newTaskInput.value = ''; newTaskInput.focus(); });
   newTaskInput.addEventListener('keydown', e => { if(e.key === 'Enter'){ addTask(newTaskInput.value); newTaskInput.value = ''; } });
+
+
 
   listEl.addEventListener('click', e => {
     const li = e.target.closest('li.task-item'); if(!li) return; const id = li.dataset.id;
@@ -107,5 +115,16 @@
   filterBtns.forEach(btn => btn.addEventListener('click', () => setFilter(btn.dataset.filter)));
   clearBtn.addEventListener('click', clearCompleted);
 
-  load(); render();
+  // sort control
+  if (sortSelect) {
+    sortSelect.addEventListener('change', () => {
+      sortOrder = sortSelect.value;
+      localStorage.setItem(SORT_KEY, sortOrder);
+      render();
+    });
+  }
+
+  load();
+  if (sortSelect) sortSelect.value = sortOrder;
+  render();
 })();
