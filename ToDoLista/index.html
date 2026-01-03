@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang= sr>
 <head>
   <meta charset=utf-8>
@@ -10,9 +10,13 @@
   <div class=app role=application aria-labelledby=app-title>
     <header class=header>
       <h1 id=app-title>To Do lista</h1>
-      <div class=controls>
-        <input id=new-task type=text placeholder=Dodaj novu stavku... aria-label=Dodaj novu stavku>
-        <button id=add-btn aria-label=Dodaj stavku>Dodaj</button>
+      <div class="controls">
+        <input id="new-task" type="text" placeholder="Dodaj novu stavku..." aria-label="Dodaj novu stavku">
+        <button id="add-btn" aria-label="Dodaj stavku">Dodaj</button>
+        <select id="sort-order" aria-label="Sortiranje zadataka">
+          <option value="newest" selected>Najnovije prvo</option>
+          <option value="oldest">Najstarije prvo</option>
+        </select>
       </div>
     </header>
 
