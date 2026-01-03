@@ -1,2 +1,2 @@
-# SZUD_-To-do-lista
-To-do lista kao projekat na kojem se primenjuje znanje iz Gita.
+# To-do List App
+Jednostavna JavaScript aplikacija na koju je primenjeno znanje iz Gita.
